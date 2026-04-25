@@ -11,13 +11,38 @@
             "id": "70e74e3341d69c9d",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "type": "canvas",
+              "state": {
+                "file": "temp.canvas",
+                "viewState": {
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0.5
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "temp"
+            }
+          },
+          {
+            "id": "6611c0485111e08d",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "temp.canvas",
+                "viewState": {
+                  "x": -43,
+                  "y": -12,
+                  "zoom": 0
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "temp"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -90,6 +115,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "temp.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +125,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for temp"
             }
           },
           {
@@ -108,11 +134,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "temp.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from temp"
             }
           },
           {
@@ -150,12 +177,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "temp.canvas",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of temp"
             }
           }
         ]
@@ -177,8 +205,10 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "feebf4b83904b654",
+  "active": "6611c0485111e08d",
   "lastOpenFiles": [
+    "temp.excalidraw.md",
+    "temp.canvas",
     "Welcome.md"
   ]
 }
