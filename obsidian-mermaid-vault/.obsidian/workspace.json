@@ -4,45 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "0eae548d482cbf1a",
+        "id": "17172356c4d99791",
         "type": "tabs",
         "children": [
           {
-            "id": "70e74e3341d69c9d",
+            "id": "25d325e3aea2328e",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "temp.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0.5
-                }
+                "file": "oxdraw-based-obsidian-plugin.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "temp"
-            }
-          },
-          {
-            "id": "6611c0485111e08d",
-            "type": "leaf",
-            "state": {
-              "type": "canvas",
-              "state": {
-                "file": "temp.canvas",
-                "viewState": {
-                  "x": -43,
-                  "y": -12,
-                  "zoom": 0
-                }
-              },
-              "icon": "lucide-layout-dashboard",
-              "title": "temp"
+              "icon": "lucide-file",
+              "title": "oxdraw-based-obsidian-plugin"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -115,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "temp.canvas",
+                "file": "oxdraw-based-obsidian-plugin.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -125,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for temp"
+              "title": "Backlinks for oxdraw-based-obsidian-plugin"
             }
           },
           {
@@ -134,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "temp.canvas",
+                "file": "oxdraw-based-obsidian-plugin.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from temp"
+              "title": "Outgoing links from oxdraw-based-obsidian-plugin"
             }
           },
           {
@@ -177,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "temp.canvas",
+                "file": "oxdraw-based-obsidian-plugin.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of temp"
+              "title": "Outline of oxdraw-based-obsidian-plugin"
             }
           }
         ]
@@ -205,10 +184,18 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "6611c0485111e08d",
+  "active": "25d325e3aea2328e",
   "lastOpenFiles": [
+    "images/oxdraw-block-edit-button-mockup.png",
+    "oxdraw-based-obsidian-plugin.md",
+    "images",
+    "temp.md",
+    "temp.excalidraw",
     "temp.excalidraw.md",
+    "working-example.excalidraw",
     "temp.canvas",
+    "working-example.mmd",
+    "temp.mmd",
     "Welcome.md"
   ]
 }
