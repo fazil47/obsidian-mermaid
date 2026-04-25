@@ -56,6 +56,8 @@ interface EditorSession {
   port: number;
   url: string;
   process: ChildProcessWithoutNullStreams;
+  exitCode: number | null;
+  exitSignal: NodeJS.Signals | null;
 }
 
 interface OxdrawViewState extends Record<string, unknown> {
@@ -65,6 +67,7 @@ interface OxdrawViewState extends Record<string, unknown> {
 export default class OxdrawMermaidPlugin extends Plugin {
   settings: OxdrawMermaidSettings = DEFAULT_SETTINGS;
   private sessions = new Map<string, EditorSession>();
+  private views = new Set<OxdrawMermaidView>();
 
   async onload() {
     await this.loadSettings();
@@ -80,9 +83,18 @@ export default class OxdrawMermaidPlugin extends Plugin {
   }
 
   async onunload() {
+    this.app.workspace.detachLeavesOfType(VIEW_TYPE_OXDRAW_MERMAID);
     for (const session of this.sessions.values()) {
       await this.closeSession(session.id);
     }
+  }
+
+  registerViewInstance(view: OxdrawMermaidView) {
+    this.views.add(view);
+  }
+
+  unregisterViewInstance(view: OxdrawMermaidView) {
+    this.views.delete(view);
   }
 
   getSession(id: string): EditorSession | undefined {
@@ -94,6 +106,9 @@ export default class OxdrawMermaidPlugin extends Plugin {
     if (!session) {
       new Notice("Oxdraw session not found.");
       return;
+    }
+    if (!isSessionAlive(session)) {
+      throw new Error("Oxdraw session has ended. Reopen the editor from the Mermaid block.");
     }
 
     const response = await fetch(`${session.url}/api/diagram/source`, {
@@ -181,6 +196,8 @@ export default class OxdrawMermaidPlugin extends Plugin {
       port,
       url: `http://127.0.0.1:${port}`,
       process: child,
+      exitCode: null,
+      exitSignal: null,
     };
 
     let startupError = "";
@@ -210,8 +227,11 @@ export default class OxdrawMermaidPlugin extends Plugin {
       void appendLaunchLog(logFile, [`[process error] ${error.message}`]);
     });
     child.on("exit", (code, signal) => {
+      session.exitCode = code;
+      session.exitSignal = signal;
       void appendLaunchLog(logFile, [`[exit] code=${code ?? ""} signal=${signal ?? ""}`]);
       this.sessions.delete(sessionId);
+      this.renderSessionViews(sessionId);
     });
 
     try {
@@ -228,7 +248,19 @@ export default class OxdrawMermaidPlugin extends Plugin {
     return session;
   }
 
+  private renderSessionViews(sessionId: string) {
+    for (const view of this.views) {
+      if (view.hasSession(sessionId)) {
+        view.render();
+      }
+    }
+  }
+
   private async replaceOriginalBlock(session: EditorSession, newBody: string) {
+    let nextLineStart = session.lineStart;
+    let nextLineEnd = session.lineEnd;
+    let nextHash = session.originalHash;
+
     await this.app.vault.process(session.sourceFile, (currentSource) => {
       const blocks = parseMermaidBlocks(currentSource);
       const originalAtLocation = blocks.find(
@@ -247,8 +279,17 @@ export default class OxdrawMermaidPlugin extends Plugin {
       }
 
       const replacement = `${block.openLine}\n${newBody.trimEnd()}\n${block.closeLine}`;
-      return currentSource.replace(block.blockText, replacement);
+      const replacementLineCount = replacement.split("\n").length;
+      nextLineStart = block.startLine;
+      nextLineEnd = block.startLine + replacementLineCount - 1;
+      nextHash = hashText(replacement);
+
+      return `${currentSource.slice(0, block.charStart)}${replacement}${currentSource.slice(block.charEnd)}`;
     });
+
+    session.lineStart = nextLineStart;
+    session.lineEnd = nextLineEnd;
+    session.originalHash = nextHash;
   }
 }
 
@@ -259,6 +300,7 @@ class OxdrawMermaidView extends ItemView {
   constructor(leaf: WorkspaceLeaf, plugin: OxdrawMermaidPlugin) {
     super(leaf);
     this.plugin = plugin;
+    this.plugin.registerViewInstance(this);
   }
 
   getViewType() {
@@ -280,9 +322,7 @@ class OxdrawMermaidView extends ItemView {
   }
 
   getState(): OxdrawViewState {
-    return {
-      sessionId: this.sessionId ?? undefined,
-    };
+    return {};
   }
 
   async onOpen() {
@@ -290,12 +330,17 @@ class OxdrawMermaidView extends ItemView {
   }
 
   async onClose() {
+    this.plugin.unregisterViewInstance(this);
     if (this.sessionId) {
       await this.plugin.closeSession(this.sessionId);
     }
   }
 
-  private render() {
+  hasSession(sessionId: string): boolean {
+    return this.sessionId === sessionId;
+  }
+
+  render() {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.addClass("oxdraw-mermaid-view");
@@ -313,6 +358,13 @@ class OxdrawMermaidView extends ItemView {
       containerEl.createDiv({
         cls: "oxdraw-mermaid-empty",
         text: "This oxdraw session has ended.",
+      });
+      return;
+    }
+    if (!isSessionAlive(session)) {
+      containerEl.createDiv({
+        cls: "oxdraw-mermaid-empty",
+        text: "This oxdraw session has ended. Reopen the editor from the Mermaid block.",
       });
       return;
     }
@@ -339,13 +391,18 @@ class OxdrawMermaidView extends ItemView {
 
     const reloadButton = toolbar.createEl("button", { text: "Reload editor" });
     reloadButton.addEventListener("click", () => {
-      iframe.src = session.url;
+      if (!isSessionAlive(session)) {
+        new Notice("Oxdraw session has ended. Reopen the editor from the Mermaid block.");
+        this.render();
+        return;
+      }
+      iframe.src = buildSessionUrl(session, String(Date.now()));
     });
 
     const iframe = containerEl.createEl("iframe", {
       cls: "oxdraw-mermaid-frame",
       attr: {
-        src: session.url,
+        src: buildSessionUrl(session),
         sandbox:
           "allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts",
       },
@@ -708,6 +765,17 @@ async function appendLaunchLog(logFile: string, lines: string[]) {
   } catch (error) {
     console.error(`Unable to write oxdraw launch log '${logFile}'.`, error);
   }
+}
+
+function isSessionAlive(session: EditorSession): boolean {
+  return !session.process.killed && session.process.exitCode === null;
+}
+
+function buildSessionUrl(session: EditorSession, cacheKey = session.id): string {
+  const url = new URL(session.url);
+  url.searchParams.set("obsidianSession", session.id);
+  url.searchParams.set("cacheKey", cacheKey);
+  return url.toString();
 }
 
 function isPortAvailable(port: number): Promise<boolean> {
