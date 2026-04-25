@@ -1,1 +1,8 @@
 .DS_Store
+node_modules/
+build/
+main.js
+*.map
+obsidian-mermaid-vault/.obsidian/plugins/oxdraw-mermaid-editor/main.js
+obsidian-mermaid-vault/.obsidian/plugins/oxdraw-mermaid-editor/build/
+obsidian-mermaid-vault/.obsidian/workspace.json
