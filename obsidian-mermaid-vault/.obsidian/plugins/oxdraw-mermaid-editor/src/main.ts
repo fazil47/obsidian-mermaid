@@ -531,7 +531,7 @@ class OxdrawMermaidSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Starting port")
-      .setDesc("The plugin will use this port or the next available port.")
+      .setDesc("The plugin will choose a random available port from this range.")
       .addText((text) => {
         text
           .setPlaceholder("5151")
@@ -690,12 +690,16 @@ function buildOxdrawEnv(): NodeJS.ProcessEnv {
 }
 
 async function findOpenPort(startingPort: number): Promise<number> {
-  for (let port = startingPort; port < startingPort + 100; port += 1) {
+  const candidateCount = Math.min(100, 65536 - startingPort);
+  const startOffset = Math.floor(Math.random() * candidateCount);
+
+  for (let index = 0; index < candidateCount; index += 1) {
+    const port = startingPort + ((startOffset + index) % candidateCount);
     if (await isPortAvailable(port)) {
       return port;
     }
   }
-  throw new Error(`No open port found starting at ${startingPort}.`);
+  throw new Error(`No open port found in range ${startingPort}-${startingPort + candidateCount - 1}.`);
 }
 
 async function appendLaunchLog(logFile: string, lines: string[]) {
