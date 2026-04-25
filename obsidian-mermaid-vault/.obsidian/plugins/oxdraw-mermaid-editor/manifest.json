@@ -1,0 +1,9 @@
+{
+  "id": "oxdraw-mermaid-editor",
+  "name": "Oxdraw Mermaid Editor",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Prototype visual editor button for Mermaid blocks using a locally installed oxdraw.",
+  "author": "Fazil Babu",
+  "isDesktopOnly": true
+}

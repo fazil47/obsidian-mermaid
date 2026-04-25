@@ -1,0 +1,17 @@
+{
+  "name": "oxdraw-mermaid-editor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "vite build --watch"
+  },
+  "devDependencies": {
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
+    "@types/node": "^20.11.30",
+    "obsidian": "^1.5.12",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.6"
+  }
+}

@@ -1,4 +1,3 @@
-
 ## Prototype 
 
 For the prototype use [oxdraw](https://github.com/RohanAdwankar/oxdraw) as the editor view. The user is expected to install `oxdraw` locally for the first version, so it will be desktop only. 

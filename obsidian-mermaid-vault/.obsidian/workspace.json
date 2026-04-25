@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "25d325e3aea2328e",
+            "id": "9d496d8e0ea358d6",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -94,7 +94,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "oxdraw-based-obsidian-plugin.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +103,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for oxdraw-based-obsidian-plugin"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +112,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "oxdraw-based-obsidian-plugin.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from oxdraw-based-obsidian-plugin"
+              "title": "Outgoing links"
             }
           },
           {
@@ -156,13 +154,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "oxdraw-based-obsidian-plugin.md",
+                "file": "Drawing 2026-04-25 12.54.35.excalidraw.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of oxdraw-based-obsidian-plugin"
+              "title": "Outline of Drawing 2026-04-25 12.54.35.excalidraw"
             }
           }
         ]
@@ -184,10 +182,12 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "25d325e3aea2328e",
+  "active": "feebf4b83904b654",
   "lastOpenFiles": [
-    "images/oxdraw-block-edit-button-mockup.png",
     "oxdraw-based-obsidian-plugin.md",
+    "test.md",
+    "Drawing 2026-04-25 12.54.35.excalidraw.md",
+    "images/oxdraw-block-edit-button-mockup.png",
     "images",
     "temp.md",
     "temp.excalidraw",
